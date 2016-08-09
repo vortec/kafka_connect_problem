@@ -1,0 +1,21 @@
+version: '2'
+
+services:
+  python:
+    build: ./python
+    volumes:
+      - ./python:/code
+
+  zookeeper:
+    build: ./zookeeper
+
+  kafka:
+    build: ./kafka
+    volumes:
+      - ./kafka/logs:/kafka/logs
+    environment:
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper
+      KAFKA_ZOOKEEPER_SESSION_TIMEOUT_MS: 500
+    depends_on:
+      - zookeeper
